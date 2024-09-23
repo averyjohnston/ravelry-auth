@@ -1,0 +1,24 @@
+{
+  "name": "ravelry-auth",
+  "version": "1.0.0",
+  "type": "module",
+  "module": "index.js",
+  "description": "A simple Node app that acts as a backend for interaction with the Ravelry API through Oauth2.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^2.8.0",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.30.0",
+    "typescript": "^5.6.2"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  }
+}
