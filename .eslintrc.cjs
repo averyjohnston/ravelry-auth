@@ -10,7 +10,7 @@ module.exports = {
   parserOptions: {
     project: ['tsconfig.json']
   },
-  plugins: ['react-refresh', '@stylistic', 'import'],
+  plugins: ['@stylistic', 'import'],
   rules: {
     '@stylistic/quotes': ['warn', 'single'],
     '@stylistic/no-extra-parens': ['warn', 'all', {
