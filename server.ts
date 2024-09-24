@@ -2,11 +2,17 @@ import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
 import randomstring from 'randomstring';
+import type { AuthorizationTokenConfig } from 'simple-oauth2';
 import oauth2 from 'simple-oauth2';
 
 const app = express();
 
 // TODO: refresh token if it's close to expiring
+
+const { SESSION_SECRET, RAVELRY_CLIENT_ID, RAVELRY_CLIENT_SECRET, REDIRECT_URL } = process.env;
+if (SESSION_SECRET === undefined || RAVELRY_CLIENT_ID === undefined || RAVELRY_CLIENT_SECRET === undefined || REDIRECT_URL === undefined) {
+  console.error('Variables missing from .env config');
+}
 
 app.use(session({
   secret: process.env.SESSION_SECRET!,
@@ -41,6 +47,26 @@ app.get('/auth', (_req, res) => {
   });
 
   res.redirect(authUri);
+});
+
+app.get('/callback', (req, res) => {
+  const { code } = req.query;
+  if (typeof code !== 'string') {
+    console.error('Code must be of type string, found:', code);
+    return res.status(500).send('Invalid callback parameters');
+  }
+
+  const options: AuthorizationTokenConfig = {
+    code,
+    redirect_uri: process.env.REDIRECT_URL!,
+  };
+
+  auth.getToken(options).then(token => {
+    res.json(token);
+  }).catch(e => {
+    console.error(e);
+    res.status(500).send('Internal server error');
+  });
 });
 
 const PORT = process.env.PORT || 5000;
