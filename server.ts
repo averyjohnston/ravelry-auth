@@ -1,3 +1,4 @@
+import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
@@ -18,6 +19,10 @@ app.use(session({
   secret: process.env.SESSION_SECRET!,
   resave: false,
   saveUninitialized: true,
+}));
+
+app.use(cors({
+  origin: ['*.ngrok-free.app', 'ravelry-auth.onrender.com', 'row-counter.onrender.com'],
 }));
 
 app.use((req, res, next) => {
