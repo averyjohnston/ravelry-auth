@@ -1,4 +1,3 @@
-import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import session from 'express-session';
@@ -21,9 +20,15 @@ app.use(session({
   saveUninitialized: true,
 }));
 
-app.use(cors({
-  origin: ['*.ngrok-free.app', 'ravelry-auth.onrender.com', 'row-counter.onrender.com'],
-}));
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin !== undefined && (origin.indexOf('.ngrok-free.app') > -1 || origin === 'https://row-counter.onrender.com')) {
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  }
+
+  next();
+});
 
 app.use((req, res, next) => {
   res.locals.session = req.session;
